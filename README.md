@@ -1,2 +1,2 @@
-# mhd-visuals
-Music Hackday Visualiser
+# ombak
+A sequencer in JS
