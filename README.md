@@ -1,2 +1,2 @@
-# ombak
-A sequencer in JS
+# Music Hackday Visuals
+A music Hackday Visualiser
