@@ -6,13 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Music Hackday Visuals</title> <!-- ADD A TITLE! -->
 
-  <!-- <link rel="stylesheet" href="css/styles.css"> -->
+  <link rel="stylesheet" href="css/styles.css">
 
 
 <!-- Set up Web MIDI polyfill -->
     <script src='js/webmidi.min.js'></script>
+    <script src='js/paper-full.js'></script>
 
   <script>
+
+
+
+
+function jsMap(val, A, B, a, b) {
+    var mapd = (val - A) * (b - a) / (B - A) + a
+    return mapd;
+}
+
+
+  var circPoint = 100;
 
 // Enable WebMidi.js
 WebMidi.enable(function (err) {
@@ -37,7 +49,10 @@ WebMidi.enable(function (err) {
   // Listen to pitch bend message on all channels
   input.addListener('pitchbend', 2,
     function (e) {
-      console.log("Received 'pitchbend' message.", e);
+      // console.log("Received 'pitchbend' message.", e);
+      console.log(e.value);
+      circPoint = jsMap(e.value,-1,-0.9844970703125,-50,50)
+      // circPoint = e;
     }
   );
 
@@ -51,7 +66,31 @@ WebMidi.enable(function (err) {
 
 });
 
+paper.install(window);
+// Only executed our code once the DOM is ready.
+window.onload = function() {
 
+    // Get a reference to the canvas object
+    var canvas = document.getElementById('paperCanvas');
+    // Create an empty project and a view for the canvas:
+    paper.setup(canvas);
+
+    var tempPulse = new paper.Path.Circle(paper.view.center, 20);
+        tempPulse.fillColor = 'White';
+
+
+    paper.view.onFrame = function(event) {
+
+      tempPulse.position.x = paper.view.center.x + circPoint;
+
+
+    }
+
+
+    // Draw the view now:
+    paper.view.draw();
+
+}
     
   </script>
 
@@ -59,6 +98,7 @@ WebMidi.enable(function (err) {
 </head>
 <body>
 
+<canvas id="paperCanvas" class="fullWidthCanvas" resize></canvas>
 
 
 </body>
